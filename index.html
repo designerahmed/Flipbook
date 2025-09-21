@@ -24,7 +24,7 @@
       background: white;
     }
     .page {
-      background-size: cover;      /* ملء الصفحة بالكامل */
+      background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
     }
@@ -50,13 +50,17 @@
   <script>
     function initFlipbook() {
       var w = window.innerWidth;
+      var flipbook = $("#flipbook");
 
-      $("#flipbook").turn("destroy").html($("#flipbook").html()); // إعادة بناء
+      // إذا كان الفليببوك معمول له turn من قبل → ندمروه
+      if (flipbook.data("turn")) {
+        flipbook.turn("destroy");
+      }
 
       if (w > 900) {
-        // 📌 على الحاسوب: صفحتين (480 × 2)
-        $("#flipbook").turn({
-          width: 960,
+        // 📌 على الحاسوب: صفحتين
+        flipbook.turn({
+          width: 960,   // (480 × 2)
           height: 850,
           autoCenter: true,
           elevation: 50,
@@ -64,11 +68,11 @@
         });
         $(".page").css({ width: "480px", height: "850px" });
       } else {
-        // 📌 على الجوال: صفحة واحدة فقط (480px)
-        $("#flipbook").turn({
+        // 📌 على الجوال: صفحة واحدة
+        flipbook.turn({
           width: 480,
           height: 850,
-          display: 'single',  // عرض صفحة واحدة
+          display: 'single', // وضع صفحة واحدة
           autoCenter: true,
           elevation: 50,
           gradients: true
