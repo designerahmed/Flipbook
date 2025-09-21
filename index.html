@@ -20,17 +20,13 @@
       overflow: hidden;
     }
     #flipbook {
-      width: 960px;   /* كتاب كامل (صفحتين × 480px) */
-      height: 850px;  /* ارتفاع ثابت */
       box-shadow: 0 0 20px rgba(0,0,0,0.3);
       background: white;
     }
     .page {
-      width: 480px;   /* عرض الصفحة */
-      height: 850px;  /* ارتفاع الصفحة */
-      background-size: cover;      /* تملأ الصفحة بالكامل */
+      background-size: cover;      /* ملء الصفحة بالكامل */
       background-repeat: no-repeat;
-      background-position: center; /* تمركز الصورة */
+      background-position: center;
     }
   </style>
 </head>
@@ -52,13 +48,37 @@
   </div>
 
   <script>
-    $("#flipbook").turn({
-      width: 960,   // كتاب (480px × 2 صفحات)
-      height: 850,  // ارتفاع ثابت
-      autoCenter: true,
-      elevation: 50,
-      gradients: true
-    });
+    function initFlipbook() {
+      var w = window.innerWidth;
+
+      $("#flipbook").turn("destroy").html($("#flipbook").html()); // إعادة بناء
+
+      if (w > 900) {
+        // 📌 على الحاسوب: صفحتين (480 × 2)
+        $("#flipbook").turn({
+          width: 960,
+          height: 850,
+          autoCenter: true,
+          elevation: 50,
+          gradients: true
+        });
+        $(".page").css({ width: "480px", height: "850px" });
+      } else {
+        // 📌 على الجوال: صفحة واحدة فقط (480px)
+        $("#flipbook").turn({
+          width: 480,
+          height: 850,
+          display: 'single',  // عرض صفحة واحدة
+          autoCenter: true,
+          elevation: 50,
+          gradients: true
+        });
+        $(".page").css({ width: "480px", height: "850px" });
+      }
+    }
+
+    $(document).ready(initFlipbook);
+    $(window).resize(initFlipbook);
   </script>
 </body>
 </html>
